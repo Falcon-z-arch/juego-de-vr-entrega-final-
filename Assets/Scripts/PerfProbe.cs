@@ -34,7 +34,7 @@ public class PerfProbe : MonoBehaviour
     InputAction kP, kO, lClick, rClick, bX, bY;
     TextMeshPro label;
     Camera labelCam;
-    bool showPanel;
+    int mode;            // 0 = solo FPS (por defecto), 1 = panel completo, 2 = oculto
     float timer, comboT;
     int frames; float sumDt, worst;
     readonly int[] hist = new int[400];      // 0.25 ms por casilla
@@ -86,7 +86,7 @@ public class PerfProbe : MonoBehaviour
         hist[Mathf.Clamp((int)(dt * 4000f), 0, hist.Length - 1)]++;
 
         // entradas
-        if (kP.WasPressedThisFrame() || (lClick.IsPressed() && rClick.IsPressed() && (lClick.WasPressedThisFrame() || rClick.WasPressedThisFrame()))) showPanel = !showPanel;
+        if (kP.WasPressedThisFrame() || (lClick.IsPressed() && rClick.IsPressed() && (lClick.WasPressedThisFrame() || rClick.WasPressedThisFrame()))) { mode = (mode + 1) % 3; UpdateLabel(); }
         bool both = bX.IsPressed() && bY.IsPressed();
         comboT = both ? comboT + dt : 0f;
         if (kO.WasPressedThisFrame() || (both && comboT > 0.8f && comboT - dt <= 0.8f)) ToggleOpt();
@@ -97,10 +97,10 @@ public class PerfProbe : MonoBehaviour
             lastFps = frames / sumDt; lastMs = sumDt / frames * 1000f;
             Log(worst * 1000f);
             frames = 0; sumDt = 0f; worst = 0f; timer = 0f;
-            if (showPanel) UpdateLabel();
+            UpdateLabel();
             if (((int)Time.unscaledTime) % 10 == 0) WriteSummary();
         }
-        if (showPanel) EnsureLabel();
+        if (mode != 2 && XRSettings.isDeviceActive) EnsureLabel();
         else if (label != null) label.gameObject.SetActive(false);
     }
 
@@ -182,7 +182,7 @@ public class PerfProbe : MonoBehaviour
             label.fontSize = 1.6f; label.color = new Color(0.6f, 1f, 0.7f);
             label.alignment = TextAlignmentOptions.TopLeft;
             label.rectTransform.sizeDelta = new Vector2(6f, 3f);
-            label.enableWordWrapping = false;
+            label.textWrappingMode = TextWrappingModes.NoWrap;
             labelCam = cam;
         }
         label.gameObject.SetActive(true);
@@ -191,9 +191,28 @@ public class PerfProbe : MonoBehaviour
     void UpdateLabel()
     {
         if (label == null) return;
+        label.text = Text();
+    }
+
+    string Text()
+    {
+        if (mode == 0) return string.Format("FPS {0:F0}", lastFps);
         double avgMs = totalFrames > 0 ? totalDt / totalFrames * 1000.0 : 0;
-        label.text = string.Format("FPS {0:F0}  ({1:F1} ms)\nP99 {2:F1} ms | prom {3:F1} FPS\nDraw {4} | SetPass {5} | Tris {6}\nRenderers {7} | Luces {8}\nOptimizaciones: {9}",
+        return string.Format("FPS {0:F0}  ({1:F1} ms)\nP99 {2:F1} ms | prom {3:F1} FPS\nDraw {4} | SetPass {5} | Tris {6}\nRenderers {7} | Luces {8}\nOptimizaciones: {9}",
             lastFps, lastMs, P99(), avgMs > 0 ? 1000.0 / avgMs : 0, Draw, SetP, Tris, rendCount, lightCount, PlayerPrefs.GetInt("optimizar", 1) == 1 ? "ON" : "OFF");
+    }
+
+    // contador de FPS en pantalla (celular / PC); en el lente se usa el panel pegado a la camara
+    GUIStyle st;
+    void OnGUI()
+    {
+        if (mode == 2 || XRSettings.isDeviceActive) return;
+        if (st == null) st = new GUIStyle(GUI.skin.label) { fontSize = Mathf.Max(18, Screen.height / 30), fontStyle = FontStyle.Bold, alignment = TextAnchor.LowerRight };
+        string t = Text();
+        Color c = lastFps >= 60f ? new Color(0.5f, 1f, 0.5f) : lastFps >= 30f ? new Color(1f, 0.9f, 0.3f) : new Color(1f, 0.4f, 0.3f);
+        var r = new Rect(Screen.width - 520f, Screen.height - (mode == 0 ? 60f : 220f), 500f, mode == 0 ? 50f : 200f);
+        st.normal.textColor = Color.black; GUI.Label(new Rect(r.x + 2, r.y + 2, r.width, r.height), t, st);
+        st.normal.textColor = c; GUI.Label(r, t, st);
     }
 }
 

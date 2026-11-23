@@ -100,7 +100,75 @@ public class MenuController : MonoBehaviour
         vl.transform.position = vb + new Vector3(0f, y + 6f, -10f);
         var vlight = vl.AddComponent<Light>(); vlight.type = LightType.Point; vlight.range = 80f; vlight.intensity = 60f; vlight.color = new Color(1f, 0.4f, 0.1f);
 
+        AddMenuButtons();
         StyleUi();
+    }
+
+    // ---- boton "Borrar progreso" + reordenar el menu (todo en ejecucion, no hace falta reconstruir)
+    TMPro.TMP_Text resetLabel;
+    float confirmUntil;
+
+    static string LabelOf(UnityEngine.UI.Button b)
+    {
+        var t = b.GetComponentInChildren<TMPro.TMP_Text>();
+        return t != null ? t.text.ToLower() : "";
+    }
+
+    void AddMenuButtons()
+    {
+        UnityEngine.UI.Button quit = null, story = null;
+        var list = new System.Collections.Generic.List<UnityEngine.UI.Button>();
+        foreach (var b in FindObjectsByType<UnityEngine.UI.Button>(FindObjectsSortMode.None))
+        {
+            if (b.name == "BotonDev" || b.name == "BotonReset") continue;
+            string l = LabelOf(b);
+            if (l.Contains("salir")) quit = b;
+            if (l.Contains("historia")) story = b;
+            list.Add(b);
+        }
+        if (quit == null || story == null) return;
+
+        var t = story.GetComponentInChildren<TMPro.TMP_Text>();
+        if (t != null) t.text = "Nueva run (Modo Historia)";
+
+        var clone = Instantiate(story.gameObject, story.transform.parent);
+        clone.name = "BotonReset";
+        var rb = clone.GetComponent<UnityEngine.UI.Button>();
+        rb.onClick = new UnityEngine.UI.Button.ButtonClickedEvent();   // quita los eventos copiados del editor
+        rb.onClick.AddListener(ResetProgress);
+        resetLabel = clone.GetComponentInChildren<TMPro.TMP_Text>();
+        if (resetLabel != null) resetLabel.text = "Borrar progreso";
+        list.Add(rb);
+
+        // orden y espaciado: historia, pruebas, galeria, VR, borrar progreso, salir
+        string[] order = { "historia", "controles", "galeria", "modo vr", "borrar", "salir" };
+        float y = 150f;
+        foreach (var key in order)
+            foreach (var b in list)
+            {
+                if (b == null || !LabelOf(b).Contains(key)) continue;
+                var rt = (RectTransform)b.transform;
+                var ap = rt.anchoredPosition; ap.y = y; rt.anchoredPosition = ap;
+                y -= key == "salir" ? 0f : 105f;
+                break;
+            }
+    }
+
+    public void ResetProgress()
+    {
+        if (Time.unscaledTime > confirmUntil)
+        {
+            confirmUntil = Time.unscaledTime + 4f;
+            if (resetLabel != null) resetLabel.text = "Seguro? Toca otra vez";
+            return;
+        }
+        // borra monedas, mejoras, victorias y tutoriales; conserva solo los ajustes de VR y rendimiento
+        int vr = PlayerPrefs.GetInt("modoVR", 0), opt = PlayerPrefs.GetInt("optimizar", 1);
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt("modoVR", vr); PlayerPrefs.SetInt("optimizar", opt);
+        PlayerPrefs.Save();
+        IntroCinematic.Reset();
+        Load("Comarca");
     }
 
     void StyleUi()
@@ -142,6 +210,7 @@ public class MenuController : MonoBehaviour
     void Update()
     {
         clock += Time.unscaledDeltaTime;
+        if (resetLabel != null && confirmUntil > 0f && Time.unscaledTime > confirmUntil) { resetLabel.text = "Borrar progreso"; confirmUntil = 0f; }
         if (stars != null)
             for (int i = 0; i < stars.Length; i++)
                 if (stars[i] != null) stars[i].localScale = Vector3.one * baseScale[i] * (1f + 0.35f * Mathf.Sin(clock * (1.5f + (i % 5) * 0.4f) + phase[i]));

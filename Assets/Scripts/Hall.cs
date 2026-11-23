@@ -414,7 +414,7 @@ public class HallController : MonoBehaviour
         g.transform.position = worldPos;
         var t = g.AddComponent<TextMeshPro>();
         t.text = s; t.fontSize = fs; t.color = c; t.alignment = al;
-        t.enableWordWrapping = true;
+        t.textWrappingMode = TextWrappingModes.Normal;
         t.rectTransform.sizeDelta = size;
         return t;
     }

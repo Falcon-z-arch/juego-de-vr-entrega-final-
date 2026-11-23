@@ -83,15 +83,30 @@ public static class UiKit
 // Pausa mientras hay una ventana abierta
 public static class Modal
 {
-    public static bool Open;
+    static bool open;
     static float prev = 1f;
 
-    public static void Begin() { if (!Open) { prev = Time.timeScale > 0f ? Time.timeScale : 1f; Time.timeScale = 0f; Open = true; } }
-    public static void End() { if (Open) { Time.timeScale = prev; Open = false; } }
+    // Autocorrige: Begin() deja timeScale en 0; si alguien lo reinicio (menu, Hall, cambio de escena) sin llamar End(),
+    // el flag quedaba pegado y las tiendas no volvian a abrir.
+    public static bool Open
+    {
+        get { if (open && Time.timeScale > 0f) open = false; return open; }
+    }
+
+    public static void Begin() { if (!Open) { prev = Time.timeScale > 0f ? Time.timeScale : 1f; Time.timeScale = 0f; open = true; } }
+    public static void End() { if (open) { Time.timeScale = prev; open = false; } }
+    public static void Reset() { open = false; prev = 1f; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { Open = false; prev = 1f; }
+    static void ResetStatics()
+    {
+        Reset();
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnScene;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnScene;
+    }
+    static void OnScene(UnityEngine.SceneManagement.Scene s, UnityEngine.SceneManagement.LoadSceneMode m) { Reset(); }
 }
+
 
 // Vendedor de la Comarca: se toca y abre su tienda.
 public class Vendor : Interactable

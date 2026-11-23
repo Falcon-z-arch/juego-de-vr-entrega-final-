@@ -115,8 +115,10 @@ public class NearVendor : MonoBehaviour
         if (DevMode.Enabled)
         {
             var st = new GUIStyle(GUI.skin.label) { fontSize = Mathf.Max(14, Screen.height / 45) };
+            GUI.color = Color.yellow;
             GUI.Label(new Rect(10, Screen.height - st.fontSize * 2.4f, Screen.width, st.fontSize * 2f),
-                "Vendedores: " + Vendor.All.Count + " (" + string.Join(",", Vendor.All.ConvertAll(v => v != null ? v.vendorName : "?")) + ")  Modal: " + Modal.Open + "  " + dbg, st);
+                "Vendedores: " + Vendor.All.Count + " (" + string.Join(",", Vendor.All.ConvertAll(v => v != null ? v.vendorName : "?")) + ")  Modal: " + Modal.Open + "  tiendaAbierta: " + VendorMenu.IsOpen + "  timeScale: " + Time.timeScale.ToString("0.##") + "  " + dbg, st);
+            GUI.color = Color.white;
         }
         if (!showBtn) return;
         float w = Screen.width * 0.34f, h = Screen.height * 0.11f;
