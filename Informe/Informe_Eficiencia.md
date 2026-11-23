@@ -1,7 +1,7 @@
 # ASCUA - Informe de analisis de eficiencia (Meta Quest)
 
-Equipo: [completar]  |  Dispositivo: Meta Quest [2 / 3 / Pro: completar]  |  Fecha de las mediciones: [completar]
-> Las cifras de este informe DEBEN salir de mediciones reales hechas en el lente. Las celdas [completar] se llenan con `perf_resumen.txt` / `perf_log.csv` y con capturas.
+Equipo: Agustin Falcon  |  Dispositivo de medicion: [PC / Unity Editor, o Meta Quest si hay lente: completar]  |  Fecha de las mediciones: [completar]
+> Las cifras de este informe DEBEN salir de mediciones reales. Si no hay lente disponible, se miden en el PC (Unity Editor, ventana Game > **Stats**: Batches, SetPass, Tris, y el contador FPS del juego) y se indica en cada tabla "medido en PC". Los valores del Quest quedan pendientes y no se estiman.
 
 ## 1. Metodo de medicion
 - Herramienta propia `PerfProbe` (corre sola en cada escena): FPS, tiempo de cuadro promedio/peor/percentil 99, draw calls, SetPass, triangulos, renderers y luces activas, memoria. Guarda `perf_log.csv` (1 fila por segundo) y `perf_resumen.txt` en la carpeta de datos de la app.
@@ -14,10 +14,11 @@ Equipo: [completar]  |  Dispositivo: Meta Quest [2 / 3 / Pro: completar]  |  Fec
 ## 2. Resultados ANTES (optimizaciones OFF)
 | Punto | FPS prom | ms prom | ms P99 | Draw calls | SetPass | Triangulos | Luces | Memoria MB |
 |---|---|---|---|---|---|---|---|---|
-| A Hall | [completar] | | | | | | | |
-| B Comarca | [completar] | | | | | | | |
-| C Piso 1 con fuego | [completar] | | | | | | | |
-| D Jefe | [completar] | | | | | | | |
+| A Hall | [pendiente] | | | | | | | |
+| B Comarca (aldea, Unity Editor en PC) | 72 (lectura del contador FPS del juego, captura adjunta) | | | | | | | |
+| C Piso 1 con fuego | [pendiente] | | | | | | | |
+| D Jefe | [pendiente] | | | | | | | |
+Unico dato medido hasta ahora: el contador FPS del juego marco 72 en la aldea (Editor en PC). Como el juego fija `targetFrameRate = 72`, esa cifra es el tope y no mide cuanto margen hay. Las celdas [pendiente] no se estiman.
 Meta de fluidez en Quest: 72 FPS estables (13,9 ms por cuadro).
 
 ## 3. Cuellos de botella (completar con lo que muestren las mediciones)
@@ -56,3 +57,24 @@ Resultado del analisis: [completar: cual fue el cuello real, con captura del Pro
 - Mejora de FPS promedio: [completar] %  |  Reduccion de draw calls: [completar] %  |  Mejora del P99: [completar] ms.
 - Evidencia adjunta: [capturas del panel / Profiler / OVR Metrics antes y despues].
 - Que quedo pendiente y por que: [completar].
+
+
+## 7. Metodo alternativo sin lente (medicion en PC)
+1. Abrir la escena, dar Play y abrir `Game > Stats` (Batches, SetPass calls, Tris, Shadow casters).
+2. Hacer el recorrido A-D del punto 1 durante 60 s cada uno; anotar FPS (contador del juego), Batches, SetPass y Tris.
+3. ANTES: tecla **O** para apagar las optimizaciones; DESPUES: **O** de nuevo. Repetir el mismo recorrido.
+4. Guardar capturas de la ventana Stats de cada punto como evidencia.
+Aviso: el PC es mucho mas potente que el Quest. Estos valores sirven para comparar antes/despues (cuantos draw calls y luces se ahorran), no para afirmar que el juego corre a 72 FPS en el lente.
+
+## 8. Problemas reales encontrados durante el desarrollo
+**Vendedores que dejaban de funcionar (costo varias iteraciones).**
+- Sintoma: la tienda no abria al acercarse al vendedor, aunque el debug mostraba "Vendedores: 3".
+- Diagnostico: el `Editor.log` mostraba `NearVendor: cerca de Herrero ... Modal.Open=True` mientras el juego seguia corriendo (habilidades y gancho respondian). `Modal.Begin()` pone `timeScale=0` y marca `Open=true`; otras partes (menu, Hall, cambio de escena) restauraban `timeScale=1` sin llamar a `Modal.End()`, y el flag quedaba pegado. Con `Modal.Open` en true, `Vendor.Update` y `NearVendor` nunca volvian a abrir la tienda.
+- Solucion: `Modal.Open` ahora se autocorrige (si `timeScale>0` el flag se baja solo) y `Modal` se reinicia al cargar cada escena. Se agrego ademas una linea de depuracion (Modal, tiendaAbierta, timeScale, distancia) para ver el estado en pantalla.
+- Leccion: un estado global (`static`) que depende de otro estado global (`timeScale`) debe validarse contra el, o reiniciarse al cambiar de escena.
+
+**Errores de compilacion al migrar a Unity 6.** `TMP_Text.enableWordWrapping` esta obsoleto (CS0619); se reemplazo por `textWrappingMode`.
+
+**Puertas de los pisos 3 y 4 sin abrir.** Se reconstruyen por codigo (`RebuildDoor` / `ClearPath`) y se limpian obstaculos en el pasillo.
+
+**Pendiente de medir en el Quest:** [completar si se prueba en el lente].

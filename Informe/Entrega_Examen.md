@@ -61,13 +61,32 @@ Completar con lo ocurrido en la migracion real al Quest. Problemas ya resueltos 
 - El jefe no aparecia -> activacion por distancia como respaldo del trigger.
 - [completar: problemas reales de compilar/instalar en el Quest: modo desarrollador, adb, drivers, version de OpenXR, permisos, rendimiento, etc.]
 
-## 5. Evidencia de Antigravity y OpenCode
-(No se puede inventar: pegar capturas y registros reales.)
-| Herramienta | Que se le pidio (prompt) | Que respondio / cambio | Revision del equipo | Captura / enlace |
+## 5. Evidencia de uso de asistentes de IA
+Capturas reales de las conversaciones con el asistente de IA (Claude) durante el desarrollo: cada una muestra lo que se pidio, lo que respondio y como se reviso en Unity.
+
+**Evidencia 1 - Puerta con progreso y vendedores.**
+![Puerta y vendedores](img/evidencia_1_puerta_vendedores.png)
+- Pedido: la puerta no funciona; que baje un poco cada vez que se activa algo del puzzle; revisar los vendedores (funcionaban el Herrero y el Alquimista, no el Mercader).
+- Respuesta del asistente: la puerta baja una parte con el primer encargo (mensaje "La puerta baja un poco (1/2)" y sonido) y se abre del todo con el segundo. Para el Mercader cambio el constructor: el vendedor se registra primero en cada tienda y despues se arma el resto, asi un modelo que falle ya no deja la tienda sin vendedor. Indico reconstruir con `Certamen2 > 0 - Construir TODO` y revisar la linea de depuracion "Vendedores: 3".
+- Revision del equipo: se probo en Unity y se reviso la consola; el problema de los vendedores reaparecio mas tarde y se resolvio con el arreglo de `Modal` descrito en el punto 4.
+
+**Evidencia 2 - Puerta de Karnak como barrera, textura de la gatera, murallas y textos.**
+![Puerta barrera y murallas](img/evidencia_2_puerta_barrera_murallas.png)
+- Pedido: que la puerta abierta sea una barrera entre reinos; textura para las entradas por donde pasa el hobbit; balcones en las murallas de la subida; que los textos no aparezcan desde tan lejos y que los puzzles sin instrucciones dejen solo los textos de tutorial.
+- Respuesta del asistente: puerta doble de madera oscura con bandas de hierro y sello rojo que se abre hacia afuera al tocarla; murallas blancas de 12 m con almenas y torres con bandera a cada lado; gatera del hobbit con el ladrillo oscuro del reino, con el tamano correcto.
+- Revision del equipo: se reviso en Unity y se pidio reconstruir la escena.
+
+**Evidencia 3 - Casas mal colocadas y caida del mapa.**
+![Casas y caida](img/evidencia_3_casas_caida_mapa.png)
+- Pedido: las casas seguian mal y el jugador se seguia cayendo del mapa (mensaje "Caiste (ZonaCaida) en x=-50 z=1").
+- Respuesta del asistente: reviso la escena nueva, confirmo que ya tenia el arreglo de las casas y que la caida ocurria en x=-50, z=1 aunque ahi habia suelo, y siguio analizando como estaban colocadas las piezas y que habia bajo el punto de aparicion.
+- Revision del equipo: se corrigio la orientacion de las casas (`PropModels.DressHut`) y se verifico el recorrido en Unity.
+
+**Antigravity y OpenCode** (rubrica 6): no se incluyen capturas porque las de arriba son del asistente Claude, no de esas herramientas. Si el equipo las uso, pegar aqui sus capturas reales.
+| Herramienta | Que se le pidio | Que respondio / cambio | Revision del equipo | Captura |
 |---|---|---|---|---|
-| Antigravity | [completar] | [completar] | [completar quien lo reviso y que corrigio] | [completar] |
-| OpenCode | [completar] | [completar] | [completar] | [completar] |
-Ademas: este proyecto uso un asistente de codigo (Claude Code) para generar y corregir los scripts; los prompts y el historial estan en [completar enlace/exportacion].
+| Antigravity | [completar solo si se uso] | | | |
+| OpenCode | [completar solo si se uso] | | | |
 
 ## 6. Demostracion en vivo (guion de 5 min)
 1. Poner el casco -> aparece el Hall (0:30). Leer paneles.

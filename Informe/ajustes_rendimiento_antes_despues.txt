@@ -1,0 +1,20 @@
+=== Ajustes de rendimiento URP 2026-11-23 02:21 ===
+-- Mobile_RPAsset
+   m_RenderScale: 0,9 -> 0,9
+   m_SupportsHDR: False -> False
+   m_MSAA: 4 -> 4
+   m_ShadowDistance: 25 -> 25
+   (no existe m_SupportsCameraDepthTexture en esta version de URP, se omite)
+   (no existe m_SupportsCameraOpaqueTexture en esta version de URP, se omite)
+   m_AdditionalLightsPerObjectLimit: 2 -> 2
+   m_MainLightShadowmapResolution: 1024 -> 1024
+-- PC_RPAsset
+   m_RenderScale: 0,9 -> 0,9
+   m_SupportsHDR: False -> False
+   m_MSAA: 4 -> 4
+   m_ShadowDistance: 25 -> 25
+   (no existe m_SupportsCameraDepthTexture en esta version de URP, se omite)
+   (no existe m_SupportsCameraOpaqueTexture en esta version de URP, se omite)
+   m_AdditionalLightsPerObjectLimit: 2 -> 2
+   m_MainLightShadowmapResolution: 1024 -> 1024
+Quita tambien: Post Processing en la camara (si lo hay) y Anti-aliasing de camara distinto de MSAA.

@@ -1,0 +1,8 @@
+=== Configuracion Meta Quest 2026-11-23 02:20 ===
+Cambiando plataforma de compilacion a Android (puede tardar: reimporta assets)...
+Player: IL2CPP, ARM64, minSdk 29 (Android 10), espacio de color Linear.
+XR Plug-in Management (Android): loader OpenXR asignado = True, inicializar al arrancar = si.
+ERROR OpenXR: Ambiguous match found.
+Escenas del build (orden): Hall, Menu, Comarca, ZonaPruebas, Galeria
+FALTA A MANO (si no esta): Player > Other Settings > Active Input Handling = Input System Package (New) y reiniciar Unity.
+FALTA A MANO: en Quest activar modo desarrollador y conectar por USB (adb devices) antes de Build And Run.
