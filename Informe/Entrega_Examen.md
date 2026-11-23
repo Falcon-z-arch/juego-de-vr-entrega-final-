@@ -82,15 +82,3 @@ Capturas reales de las conversaciones con el asistente de IA (Claude) durante el
 - Respuesta del asistente: reviso la escena nueva, confirmo que ya tenia el arreglo de las casas y que la caida ocurria en x=-50, z=1 aunque ahi habia suelo, y siguio analizando como estaban colocadas las piezas y que habia bajo el punto de aparicion.
 - Revision del equipo: se corrigio la orientacion de las casas (`PropModels.DressHut`) y se verifico el recorrido en Unity.
 
-**Antigravity y OpenCode** (rubrica 6): no se incluyen capturas porque las de arriba son del asistente Claude, no de esas herramientas. Si el equipo las uso, pegar aqui sus capturas reales.
-| Herramienta | Que se le pidio | Que respondio / cambio | Revision del equipo | Captura |
-|---|---|---|---|---|
-| Antigravity | [completar solo si se uso] | | | |
-| OpenCode | [completar solo si se uso] | | | |
-
-## 6. Demostracion en vivo (guion de 5 min)
-1. Poner el casco -> aparece el Hall (0:30). Leer paneles.
-2. Cruzar el portal (0:30) -> cinematica -> Comarca.
-3. Hablar con un vendedor y comprar (apuntando con el control) (1:00).
-4. Abrir la Puerta de Karnak, subir al piso 1 y resolver la secuencia integrada (2:00).
-5. Mostrar el panel de rendimiento (click de ambos joysticks) y alternar optimizaciones (X+Y) (1:00).
