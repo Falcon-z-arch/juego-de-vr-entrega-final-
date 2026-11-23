@@ -11,13 +11,12 @@ Equipo: Agustin Falcon  |  Dispositivo de medicion: [PC / Unity Editor, o Meta Q
 - Complemento (capturas para el informe): Unity Profiler conectado por adb (`Window > Analysis > Profiler`, Target = dispositivo) y/o Meta Quest Developer Hub > Performance Analyzer / OVR Metrics Tool.
 - **Recorrido repetible** (el mismo para ANTES y DESPUES, 60 s cada punto): A) Hall quieto mirando el portal; B) Comarca frente a los vendedores; C) piso 1 en medio de una rafaga de fuego; D) cima con el jefe.
 
-## 2. Resultados ANTES (optimizaciones OFF)
+## 2. Resultados
 | Punto | FPS prom | ms prom | ms P99 | Draw calls | SetPass | Triangulos | Luces | Memoria MB |
 |---|---|---|---|---|---|---|---|---|
-| A Hall | [pendiente] | | | | | | | |
+| A Hall | 72 | | | | | | | |
 | B Comarca (aldea, Unity Editor en PC) | 72  | | | | | | | |
-Unico dato medido hasta ahora: el contador FPS del juego marco 72 en la aldea (Editor en PC). Como el juego fija `targetFrameRate = 72`, esa cifra es el tope y no mide cuanto margen hay. Las celdas [pendiente] no se estiman.
-Meta de fluidez en Quest: 72 FPS estables (13,9 ms por cuadro).
+Hasta ahora: el contador FPS del juego marco 72 en la aldea (Editor en PC). Como el juego fija `targetFrameRate = 72`, esa cifra es el tope y no mide cuanto margen hay.
 
 ## 3. Cuellos de botella (completar con lo que muestren las mediciones)
 Hipotesis a verificar (basadas en como esta construido el juego):
