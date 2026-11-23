@@ -3,7 +3,7 @@
 Roguelike de puzzles en equipo para **Meta Quest** (OpenXR) y celular Android. Unity 6 (URP, Input System).
 Proyecto del curso de Realidad Virtual (UDD): Certamen 2 (APK Android) y Examen (Meta Quest).
 
-> Equipo: [completar nombres]  |  Curso/seccion: [completar]  |  Profesor: [completar]
+> Equipo: Agustin Falcon  |  Curso/seccion: REALIDAD VIRTUAL CON UNITY 3D: CREANDO SOLUCIONES INNOVADORAS  |  Profesor: MAURICIO REYES CONTRERAS
 
 ## Historia
 El Cronarca detuvo el tiempo en la Comarca. El Ascua, un reloj de arena, corrompe a quien lo carga. Un hobbit, un mago, un ingeniero y un peleador suben la montana de Karnak (4 pisos de puzzles y fuego) para vencer al Cronarca y devolver el Ascua a la lava.
