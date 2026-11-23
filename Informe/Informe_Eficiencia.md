@@ -15,9 +15,7 @@ Equipo: Agustin Falcon  |  Dispositivo de medicion: [PC / Unity Editor, o Meta Q
 | Punto | FPS prom | ms prom | ms P99 | Draw calls | SetPass | Triangulos | Luces | Memoria MB |
 |---|---|---|---|---|---|---|---|---|
 | A Hall | [pendiente] | | | | | | | |
-| B Comarca (aldea, Unity Editor en PC) | 72 (lectura del contador FPS del juego, captura adjunta) | | | | | | | |
-| C Piso 1 con fuego | [pendiente] | | | | | | | |
-| D Jefe | [pendiente] | | | | | | | |
+| B Comarca (aldea, Unity Editor en PC) | 72  | | | | | | | |
 Unico dato medido hasta ahora: el contador FPS del juego marco 72 en la aldea (Editor en PC). Como el juego fija `targetFrameRate = 72`, esa cifra es el tope y no mide cuanto margen hay. Las celdas [pendiente] no se estiman.
 Meta de fluidez en Quest: 72 FPS estables (13,9 ms por cuadro).
 
@@ -44,20 +42,6 @@ Resultado del analisis: [completar: cual fue el cuello real, con captura del Pro
 | 8 | OpenXR Single Pass Instanced | `Examen > 2 - Configurar Meta Quest` | un draw por ambos ojos |
 | 9 | Texturas de vendedores y kits a 1024 px | `FantasyKit`, `MedievalKit` | menos memoria de texturas |
 | 10 | Texturas de plataformas y puertas **procedurales** (128 px, 1 material compartido por tipo) | `Surf` | cero archivos, pocos materiales |
-
-## 5. Resultados DESPUES (optimizaciones ON)
-| Punto | FPS prom | ms prom | ms P99 | Draw calls | SetPass | Triangulos | Luces | Memoria MB |
-|---|---|---|---|---|---|---|---|---|
-| A Hall | [completar] | | | | | | | |
-| B Comarca | [completar] | | | | | | | |
-| C Piso 1 con fuego | [completar] | | | | | | | |
-| D Jefe | [completar] | | | | | | | |
-
-## 6. Comparacion y conclusion
-- Mejora de FPS promedio: [completar] %  |  Reduccion de draw calls: [completar] %  |  Mejora del P99: [completar] ms.
-- Evidencia adjunta: [capturas del panel / Profiler / OVR Metrics antes y despues].
-- Que quedo pendiente y por que: [completar].
-
 
 ## 7. Metodo alternativo sin lente (medicion en PC)
 1. Abrir la escena, dar Play y abrir `Game > Stats` (Batches, SetPass calls, Tris, Shadow casters).
